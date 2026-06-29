@@ -1,0 +1,67 @@
+﻿@model Translator2.ViewModels.CosmosViewModel
+
+
+<form method="get">
+
+    <div class="mb-3">
+        <h5>Select categories:</h5>
+
+        @foreach (var cat in Model.Categories)
+        {
+            <div class="form-check">
+                <input class="form-check-input"
+                       type="checkbox"
+                       name="selectedCategories"
+                       value="@cat.Value"
+                @(cat.Selected ? "checked" : "") />
+
+                <label class="form-check-label">
+                    @cat.Text
+                </label>
+            </div>
+        }
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Apply
+    </button>
+
+</form>
+
+<hr />
+
+@if (Model.Products != null && Model.Products.Any())
+{
+    <table class="table table-bordered table-striped">
+
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>SKU</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Category</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model.Products)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Sku</td>
+                    <td>@item.Description</td>
+                    <td>@item.Price</td>
+                    <td>@item.CategoryName</td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+}
+else
+{
+    <div class="alert alert-warning">
+        No products found
+    </div>
+}

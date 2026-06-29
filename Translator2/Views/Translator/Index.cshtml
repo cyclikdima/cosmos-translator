@@ -1,0 +1,107 @@
+﻿@model TranslatorViewModel
+
+<div class="translate-page">
+
+    <form method="post" class="card">
+
+        <div class="languages">
+
+            <select asp-for="SourceLang">
+                <option value="uk">Українська</option>
+                <option value="en">English</option>
+                <option value="ru">Русский</option>
+            </select>
+
+            <button type="submit" class="arrow" asp-action="Change">⇄</button>
+
+            <select asp-for="TargetLang">
+                <option value="en">English</option>
+                <option value="uk">Українська</option>
+                <option value="ru">Русский</option>
+            </select>
+
+        </div>
+
+        <textarea asp-for="Text"
+                  class="textarea"
+                  placeholder="Введите текст"></textarea>
+
+        @if (Model != null && !string.IsNullOrEmpty(Model.TextTransliteration))
+        {
+            <p class="muted">@Model.TextTransliteration</p>
+        }
+        
+
+        <button type="submit" class="btn" asp-action="Index">
+            Перевести
+        </button>
+        <input type="hidden" asp-for="Result" />
+        <div class="result">
+            @if (Model != null && !string.IsNullOrEmpty(Model?.Result))
+            {
+                @Model.Result
+
+                @if (!string.IsNullOrEmpty(Model.ResultTransliteration))
+                {
+                    <p class="muted">@Model.ResultTransliteration</p>
+                }
+            }
+            else
+            {
+                <div style="color: #8d8d8d;">Перевод</div>
+            }
+        </div>
+
+        <div class="result">
+            @if (Model != null && !string.IsNullOrEmpty(Model?.FormattedResult))
+            {
+                @Model.FormattedResult
+            }
+            else
+            {
+                <div style="color: #8d8d8d;">Перевод - текс</div>
+            }
+        </div>
+    </form>
+    @if (Model?.History != null && Model.History.Any())
+    {
+    <table class="table">
+        <tbody>
+            @foreach (var item in Model.History)
+            {
+                <tr>
+                    <td>
+                        <div>@item.SourceText</div>
+
+                        @if (!string.IsNullOrEmpty(item.SourceTransliteration))
+                        {
+                            <div class="muted">@item.SourceTransliteration</div>
+                        }
+                    </td>
+
+                    <td>
+                        <div>@item.ResultText</div>
+
+                        @if (!string.IsNullOrEmpty(item.ResultTransliteration))
+                        {
+                            <div class="muted">@item.ResultTransliteration</div>
+                        }
+                    </td>
+
+                    <td>
+                        <div>
+                            @item.DateTime
+                        </div>
+                        <div>
+                            @item.SourceLanguage -> @item.TargetLanguage
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    }
+</div>
+
+
+
