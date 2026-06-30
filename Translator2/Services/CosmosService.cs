@@ -16,12 +16,12 @@ namespace Translator2.Services
             _container = db.GetContainer("TranslationHistory");
         }
 
-        public async Task AddAsync(TranslationHistory item)
+        public virtual async Task AddAsync(TranslationHistory item)
         {
             await _container.CreateItemAsync(item, new PartitionKey(item.Id));
         }
 
-        public async Task<List<TranslationHistory>> GetAllAsync()
+        public virtual async Task<List<TranslationHistory>> GetAllAsync()
         {
             var query = _container.GetItemQueryIterator<TranslationHistory>(
                 new QueryDefinition("SELECT * FROM c"));

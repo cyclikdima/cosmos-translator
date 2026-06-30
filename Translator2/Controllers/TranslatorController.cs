@@ -13,6 +13,14 @@ namespace Translator2.Controllers
         private readonly CosmosService _cosmos;
         private async Task FillTransliteration(TranslatorViewModel model)
         {
+            if (string.IsNullOrWhiteSpace(model.Text))
+            {
+                model.Result = null;
+                model.FormattedResult = null;
+                model.History = await _cosmos.GetAllAsync();
+                return;
+            }
+
             try
             {
                 model.Result = await _service.Translate(
@@ -105,7 +113,6 @@ namespace Translator2.Controllers
             model.TargetLang = tempLang;
 
             model.Text = model.Result;
-
             await FillTransliteration(model);
 
             ModelState.Clear();
